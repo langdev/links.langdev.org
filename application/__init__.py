@@ -11,3 +11,4 @@ app.config.from_object('application.settings')
 GAEMiniProfiler(app)
 
 import urls
+

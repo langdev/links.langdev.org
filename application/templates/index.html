@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="content">
+
+  <div class="page-header">
+    <h1>Links of <small>{{view_today|datetimeformat}}</small></h1>
+  </div>
+
+  <table class="zebra-striped">
+    <thead>
+      <tr>
+        <th>Link</th>
+        <th>Time</th>
+        <th>By</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for link in links%}
+      <tr>
+        <td><a href="{{link.link_url}}">{{ link.link_url}}</a></td>
+        <td><time datetime="{{link.created_at}}">{{link.created_at|datetimeformat('%H:%M')}}</time></td>
+        <td>
+          {% for author in link.authors %}
+            <span>{{author}}</span>
+          {% endfor %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+{% endblock %}
