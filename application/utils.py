@@ -12,12 +12,14 @@ import simplejson
 import urllib
 from google.appengine.api import urlfetch
 from secret_keys import LANGDEV_APP_KEY, LANGDEV_SECRET_KEY, LANGDEV_API_KEY
-from flask import Response
+from flask import Response, session
 
 import logging 
 
 
 def _langdev_sso_call(user_id, user_pass):
+
+  logging.info("call langdev sso api for %s " % user_id)
   def hmac_sha1(value):
     hash = hmac.new(LANGDEV_SECRET_KEY, value, hashlib.sha1)
     return hash.hexdigest()
@@ -32,13 +34,20 @@ def _langdev_sso_call(user_id, user_pass):
                           headers={'Accept': 'application/json'})
 
   if result.status_code == 200:
-    return simplejson.loads(result.content)
+    res = simplejson.loads(result.content)
+    if res == True:
+    	session['langdev_sso'] = True
+    return res
   else:
   	return False
 
 def check_langdev_sso(user_id, user_pass):
   """check langdev credentials by sso api"""
-  return _langdev_sso_call(user_id, user_pass)
+  if not session.has_key('langdev_sso') or \
+      not session['langdev_sso'] == True:
+    return _langdev_sso_call(user_id, user_pass)
+  else:
+  	return True
 
 def authenticate():
   """Sends a 401 response"""
