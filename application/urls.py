@@ -65,6 +65,8 @@ def guess_tz():
   if geo:
     memcache.set(memcache_key, geo)
     g.tz = _get_tz(geo)
+  else:
+  	g.tz = _get_tz()
 
 def _get_tz(tzname=None):
 
