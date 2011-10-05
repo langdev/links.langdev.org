@@ -17,7 +17,7 @@
     <tbody>
       {% for link in links%}
       <tr>
-        <td><a rel="noreferrer" href="{{link.link_url}}">{{ link.link_url}}</a></td>
+        <td class="td_link"><a rel="noreferrer" href="{{link.link_url}}">{{ link.link_url}}</a></td>
         <td><time datetime="{{link.created_at}}">{{link.created_at|datetimeformat('%H:%M')}}</time></td>
         <td>
           {% for author in link.authors %}
