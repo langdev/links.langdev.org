@@ -23,13 +23,19 @@ from optparse import OptionParser
 from random import choice
 from string import Template
 
-
 # File settings
 file_name = 'secret_keys.py'
 file_template = Template('''# CSRF- and Session keys
 
 CSRF_SECRET_KEY = '$csrf_key'
 SESSION_KEY = '$session_key'
+
+# Langdev.org keys from http://langdev.org/apps/
+LANGDEV_APP_KEY = '' 
+LANGDEV_SECRET_KEY = ''
+
+# links.langdev.org API key
+LANGDEV_API_KEY = '$langdev_api_key'
 ''')
 
 
@@ -54,10 +60,10 @@ def write_file(contents):
     f.close()
 
 
-def generate_keyfile(csrf_key, session_key):
+def generate_keyfile(csrf_key, session_key, langdev_api_key):
     """Generate random keys for CSRF- and session key"""
     output = file_template.safe_substitute(dict(
-        csrf_key=csrf_key, session_key=session_key
+        csrf_key=csrf_key, session_key=session_key, langdev_api_key=langdev_api_key
     ))
     if os.path.exists(file_name):
         if options.force is None:
@@ -72,7 +78,8 @@ def main():
     r = options.randomness
     csrf_key = generate_randomkey(r)
     session_key = generate_randomkey(r)
-    generate_keyfile(csrf_key, session_key)
+    langdev_api_key = generate_randomkey(r)
+    generate_keyfile(csrf_key, session_key, langdev_api_key)
 
 
 if __name__ == "__main__":
