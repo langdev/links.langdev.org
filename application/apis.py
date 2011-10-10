@@ -33,14 +33,14 @@ def post_link():
                   link_url=link,
                   authors=[author])
       link.put()
-      taskqueue.add(url='/_worker/fetch_title', params={ 'url': link, 'key': key })
+      taskqueue.add(url='/_worker/fetch_title', params={ 'url': link.link_url, 'key': key })
     else:
 
       if author not in exists.authors:
         exists.authors.append(author)
         exists.updated_at = datetime.now()
         exists.put()
-        taskqueue.add(url='/_worker/fetch_title', params={ 'url': link, 'key': key })
+        taskqueue.add(url='/_worker/fetch_title', params={ 'url': link.link_url, 'key': key })
 
     return jsonify({'result': True})
   except:
