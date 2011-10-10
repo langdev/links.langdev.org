@@ -40,7 +40,7 @@ def post_link():
         exists.authors.append(author)
         exists.updated_at = datetime.now()
         exists.put()
-        taskqueue.add(url='/_worker/fetch_title', params={ 'url': link.link_url, 'key': key })
+        taskqueue.add(url='/_worker/fetch_title', params={ 'url': link, 'key': key })
 
     return jsonify({'result': True})
   except:
