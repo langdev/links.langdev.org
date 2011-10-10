@@ -50,5 +50,16 @@ def warmup():
 
 
 def test():
-  link = Link(authors=['kkung','dahlia'], link_url='http://links.langdev.org')
+
+  import hashlib
+  from google.appengine.api import taskqueue
+
+  url = 'http://langdev.org'
+  key = hashlib.md5(url).hexdigest()
+
+  link = Link(key_name=key, authors=['kkung'], link_url=url)
   link.put()
+
+  taskqueue.add(url='/_worker/fetch_title', params={ 'url': url, 'key': key })
+
+  return u'OK', 200

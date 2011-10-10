@@ -10,6 +10,7 @@ from flask import render_template, request, g
 from application import app
 from application import views
 from application import apis
+from application import tasks
 
 from google.appengine.api import memcache
 from google.appengine.api import urlfetch
@@ -28,6 +29,9 @@ app.add_url_rule('/<int:year>/<int:month>/<int:day>', 'index', view_func=views.i
 app.add_url_rule('/test', 'test', view_func=views.test)
 
 app.add_url_rule('/api/link', 'api.link', view_func=apis.post_link, methods=('POST',) )
+
+# async worker
+app.add_url_rule('/_worker/fetch_title', view_func=tasks.fetch_title, methods=('POST',))
 
 ## Error handlers
 # Handle 404 errors
