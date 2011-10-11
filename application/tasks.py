@@ -39,7 +39,7 @@ def fetch_title():
      if result.status_code == 200:
        _search = _TITLE_RE_.search(result.content)
        if _search:
-         link.title = _search.groups()[0]
+         link.title = unicode(_search.groups()[0], 'utf-8')
          link.put()
 
          return u'Link %s title updated with %s.' % ( url, link.title), 200
