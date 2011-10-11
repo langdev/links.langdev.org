@@ -10,7 +10,8 @@ from google.appengine.api import urlfetch
 from models import Link
 import re
 
-import logging 
+import chardet
+import logging
 
 _TITLE_RE_ = re.compile(r"\<title\>(.*)\<\/title\>", re.M | re.I )
 
@@ -39,7 +40,13 @@ def fetch_title():
      if result.status_code == 200:
        _search = _TITLE_RE_.search(result.content)
        if _search:
-         link.title = unicode(_search.groups()[0], 'utf-8')
+
+       	 r_title = _search.groups()[0]
+       	 guess_encoding = chardet.detect(r_title)
+
+         logging.error('title: %s guess: %s' % (r_title, repr(guess_encoding)))
+
+         link.title = unicode(r_title, guess_encoding['encoding'])
          link.put()
 
          return u'Link %s title updated with %s.' % ( url, link.title), 200
