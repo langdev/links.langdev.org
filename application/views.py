@@ -54,7 +54,7 @@ def test():
   import hashlib
   from google.appengine.api import taskqueue
 
-  url = 'http://langdev.org'
+  url = 'http://cusee.net/2462861'
   key = hashlib.md5(url).hexdigest()
 
   link = Link(key_name=key, authors=['kkung'], link_url=url)
