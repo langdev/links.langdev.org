@@ -22,7 +22,10 @@ class Link(db.Model):
 
   @property
   def link_text(self):
-    return urllib.unquote(str(self.link_url)).decode('utf-8')
+    try:
+      return urllib.unquote(str(self.link_url)).decode('utf-8')
+    except UnicodeDecodeError:
+    	return str(self.link_url)
 
   @property
   def link_title(self):
